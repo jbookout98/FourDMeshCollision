@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://dp600yibglqtj"]
+
+[ext_resource type="Script" path="res://Camera3D.gd" id="1_johco"]
+[ext_resource type="PackedScene" uid="uid://bkgrudn6487mg" path="res://rigidbody_resolver.tscn" id="1_ncdk3"]
+[ext_resource type="Script" path="res://Rotors.gd" id="3_2rjfj"]
+
+[sub_resource type="Resource" id="Resource_nx1w8"]
+script = ExtResource("3_2rjfj")
+angle_xy = 0.0
+angle_xz = 0.0
+angle_xw = 0.0
+angle_yz = 0.0
+angle_yw = 0.0
+angle_zw = 0.0
+
+[sub_resource type="Resource" id="Resource_61bog"]
+script = ExtResource("3_2rjfj")
+angle_xy = 0.0
+angle_xz = 0.0
+angle_xw = 0.0
+angle_yz = 0.0
+angle_yw = 0.0
+angle_zw = 0.0
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 157, 242)
+script = ExtResource("1_johco")
+
+[node name="RigidbodyResolver" parent="." instance=ExtResource("1_ncdk3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.76381)
+
+[node name="Transform4D" parent="RigidbodyResolver/Rigidbody4D" index="0" node_paths=PackedStringArray("mesh_instance")]
+translation = Vector4(0, 0, 0, 64)
+mesh_instance = NodePath("@MeshInstance3D@18755")
+last_rotation = SubResource("Resource_nx1w8")
+
+[node name="Transform4D" parent="RigidbodyResolver/Rigidbody4D2" index="0" node_paths=PackedStringArray("mesh_instance")]
+translation = Vector4(0, 0, 0, 64)
+mesh_instance = NodePath("@MeshInstance3D@18757")
+last_rotation = SubResource("Resource_61bog")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.704073, 0, -0.710128, 0, 1, 0, 0.710128, 0, 0.704073, 0, 0, 0)
+
+[editable path="RigidbodyResolver"]
+[editable path="RigidbodyResolver/Rigidbody4D"]
+[editable path="RigidbodyResolver/Rigidbody4D2"]

@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3 uid="uid://bkgrudn6487mg"]
+
+[ext_resource type="Script" path="res://RigidbodyResolver.gd" id="1_3eb1d"]
+[ext_resource type="PackedScene" uid="uid://ur3rvrdl7x2e" path="res://rigidbody_4d.tscn" id="2_vxigg"]
+[ext_resource type="Script" path="res://Rotors.gd" id="3_pwu1y"]
+
+[sub_resource type="Resource" id="Resource_2dttd"]
+script = ExtResource("3_pwu1y")
+angle_xy = 0.0
+angle_xz = 0.0
+angle_xw = 0.0
+angle_yz = 0.0
+angle_yw = 0.0
+angle_zw = 0.0
+
+[sub_resource type="Resource" id="Resource_qhvwv"]
+script = ExtResource("3_pwu1y")
+angle_xy = 0.0
+angle_xz = 0.0
+angle_xw = 0.0
+angle_yz = 0.0
+angle_yw = 0.0
+angle_zw = 0.0
+
+[sub_resource type="Resource" id="Resource_4owkb"]
+script = ExtResource("3_pwu1y")
+angle_xy = 0.0
+angle_xz = 0.0
+angle_xw = 0.0
+angle_yz = 0.0
+angle_yw = 0.0
+angle_zw = 0.0
+
+[node name="RigidbodyResolver" type="Node3D"]
+script = ExtResource("1_3eb1d")
+
+[node name="Rigidbody4D" parent="." instance=ExtResource("2_vxigg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -404, 0, 0)
+
+[node name="Transform4D" parent="Rigidbody4D" index="0"]
+rotor = SubResource("Resource_2dttd")
+last_rotation = SubResource("Resource_qhvwv")
+
+[node name="Rigidbody4D2" parent="." instance=ExtResource("2_vxigg")]
+
+[node name="Transform4D" parent="Rigidbody4D2" index="0"]
+last_rotation = SubResource("Resource_4owkb")
+
+[editable path="Rigidbody4D"]
+[editable path="Rigidbody4D2"]

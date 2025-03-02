@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgcosrdloc76h"]
+
+[ext_resource type="Script" path="res://MeshCubeGenerator.gd" id="1_gw01s"]
+
+[node name="MeshGenerator4D" type="Node"]
+script = ExtResource("1_gw01s")
