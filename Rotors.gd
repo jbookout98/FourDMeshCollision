@@ -3,12 +3,12 @@ extends Resource
 class_name Rotor
 
 
-@export_range(0.0, 360.0, 0.1) var angle_xy: float = 0.0
-@export_range(0.0, 360.0, 0.1) var angle_xz: float = 0.0
-@export_range(0.0, 360.0, 0.1) var angle_xw: float = 0.0
-@export_range(0.0, 360.0, 0.1) var angle_yz: float = 0.0
-@export_range(0.0, 360.0, 0.1) var angle_yw: float = 0.0
-@export_range(0.0, 360.0, 0.1) var angle_zw: float = 0.0
+#@export_range(0.0, 360.0, 0.1) var angle_xy: float = 0.0
+#@export_range(0.0, 360.0, 0.1) var angle_xz: float = 0.0
+#@export_range(0.0, 360.0, 0.1) var angle_xw: float = 0.0
+#@export_range(0.0, 360.0, 0.1) var angle_yz: float = 0.0
+#@export_range(0.0, 360.0, 0.1) var angle_yw: float = 0.0
+#@export_range(0.0, 360.0, 0.1) var angle_zw: float = 0.0
 
 var is_dirty: bool = true  
 
@@ -22,23 +22,24 @@ var yw: float = 0.0
 var zw: float = 0.0
 var components = []
 # Compute the rotor from the exported angles.
-func compute_rotor() -> void:
-	# Start with an identity rotor.
-	var r = Rotor.from_angle_plane_degrees(angle_xy, "xy")
-	r = r.multiply(Rotor.from_angle_plane_degrees(angle_xz, "xz"))
-	r = r.multiply(Rotor.from_angle_plane_degrees(angle_xw, "xw"))
-	r = r.multiply(Rotor.from_angle_plane_degrees(angle_yz, "yz"))
-	r = r.multiply(Rotor.from_angle_plane_degrees(angle_yw, "yw"))
-	r = r.multiply(Rotor.from_angle_plane_degrees(angle_zw, "zw"))
-	r.normalize()
-	# Update the internal components.
-	s = r.s
-	xy = r.xy
-	xz = r.xz
-	xw = r.xw
-	yz = r.yz
-	yw = r.yw
-	zw = r.zw
+func update_rotor(angular_velocity: Dictionary, delta: float) -> void:
+	# Angular velocity as a bivector, e.g., {"xy": 10.0, "xz": 0.0, ...} in degrees/sec
+	var delta_rotor = Rotor.new(1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+	for plane in ["xy", "xz", "xw", "yz", "yw", "zw"]:
+		var angle = angular_velocity.get(plane, 0.0) * delta
+		if angle != 0.0:
+			delta_rotor = delta_rotor.multiply(Rotor.from_angle_plane_degrees(angle, plane))
+	delta_rotor.normalize()
+	# Apply the delta rotation
+	var new_rotor = delta_rotor.multiply(self)
+	s = new_rotor.s
+	xy = new_rotor.xy
+	xz = new_rotor.xz
+	xw = new_rotor.xw
+	yz = new_rotor.yz
+	yw = new_rotor.yw
+	zw = new_rotor.zw
+	normalize()
 
 # Constructor remains the same if needed.
 func _init(s: float = 1.0, xy: float = 0.0, xz: float = 0.0, xw: float = 0.0, yz: float = 0.0, yw: float = 0.0, zw: float = 0.0):
@@ -86,16 +87,11 @@ func multiply(other: Rotor, debug:bool=false) -> Rotor:
 
 	return result
 
-func getStringComponents():
-	var list = "angle_xy: " + str(angle_xy)+" angle_xz: " + str(angle_xz)+" angle_xw: " + str(angle_xw)+" angle_yz: " + str(angle_yz)+" angle_yw: " + str(angle_yw)+" angle_zw: " + str(angle_zw)
-	return list
 func getListOfAngles():
 	var list = "radxy: " + str(xy)+" radxz: " + str(xz)+" radxw: " + str(xw)+" radyz: " + str(yz)+" radyw: " + str(yw)+" radzw: " + str(zw)
 	return list
 # Apply the rotor to a 4D vector.
 func rotate(vector: Vector4) -> Vector4:
-	if is_dirty:
-		compute_rotor()  # Only compute when needed
 	
 	var rotated = rotate_vector(vector)
 	
@@ -230,14 +226,7 @@ func rotation_matrix_zw(angle: float) -> Array:
 		[ 0, 0,  sin_theta,  cos_theta]
 	]
 	
-func update_exported_angles() -> void:
-	angle_xy = rad_to_deg(2 * asin(xy))
-	
-	angle_xz = rad_to_deg(2 * asin(xz))
-	angle_xw = rad_to_deg(2 * asin(xw))
-	angle_yz = rad_to_deg(2 * asin(yz))
-	angle_yw = rad_to_deg(2 * asin(yw))
-	angle_zw = rad_to_deg(2 * asin(zw))
+
 
 # Returns a 4x4 rotation matrix as an Array of 4 Arrays (each a row of 4 floats).
 func get_combined_rotation_matrix() -> Array:
@@ -248,12 +237,12 @@ func get_combined_rotation_matrix() -> Array:
 		[0, 0, 0, 1]
 	]  # Identity matrix
 	self.normalize()
-	R = multiply_matrices(R, rotation_matrix_xy(deg_to_rad(angle_xy)))
-	R = multiply_matrices(R, rotation_matrix_xz(deg_to_rad(angle_xz)))
-	R = multiply_matrices(R, rotation_matrix_xw(deg_to_rad(angle_xw)))
-	R = multiply_matrices(R, rotation_matrix_yz(deg_to_rad(angle_yz)))
-	R = multiply_matrices(R, rotation_matrix_yw(deg_to_rad(angle_yw)))
-	R = multiply_matrices(R, rotation_matrix_zw(deg_to_rad(angle_zw)))
+	R = multiply_matrices(R, rotation_matrix_xy(xy))
+	R = multiply_matrices(R, rotation_matrix_xz(xz))
+	R = multiply_matrices(R, rotation_matrix_xw(xw))
+	R = multiply_matrices(R, rotation_matrix_yz(yz))
+	R = multiply_matrices(R, rotation_matrix_yw(yw))
+	R = multiply_matrices(R, rotation_matrix_zw(zw))
 
 	return R
 func rotate_vector(v: Vector4) -> Vector4:

@@ -1,43 +1,19 @@
 [gd_scene load_steps=7 format=3 uid="uid://dp600yibglqtj"]
 
 [ext_resource type="PackedScene" uid="uid://bkgrudn6487mg" path="res://rigidbody_resolver.tscn" id="1_ncdk3"]
-[ext_resource type="Script" path="res://Rotors.gd" id="3_2rjfj"]
+[ext_resource type="Script" uid="uid://ckfqyr1h15ykr" path="res://Rotors.gd" id="3_2rjfj"]
 
 [sub_resource type="Resource" id="Resource_3f1xp"]
 script = ExtResource("3_2rjfj")
-angle_xy = 0.0
-angle_xz = 0.0
-angle_xw = 0.0
-angle_yz = 0.0
-angle_yw = 0.0
-angle_zw = 0.0
 
-[sub_resource type="Resource" id="Resource_6nxbe"]
+[sub_resource type="Resource" id="Resource_b56jl"]
 script = ExtResource("3_2rjfj")
-angle_xy = 0.0
-angle_xz = 0.0
-angle_xw = 0.0
-angle_yz = 0.0
-angle_yw = 0.0
-angle_zw = 0.0
 
 [sub_resource type="Resource" id="Resource_vsqj5"]
 script = ExtResource("3_2rjfj")
-angle_xy = 0.0
-angle_xz = 0.0
-angle_xw = 0.0
-angle_yz = 0.0
-angle_yw = 0.0
-angle_zw = 0.0
 
-[sub_resource type="Resource" id="Resource_ly78q"]
+[sub_resource type="Resource" id="Resource_i812h"]
 script = ExtResource("3_2rjfj")
-angle_xy = 0.0
-angle_xz = 0.0
-angle_xw = 0.0
-angle_yz = 0.0
-angle_yw = 0.0
-angle_zw = 0.0
 
 [node name="Node3D" type="Node3D"]
 
@@ -54,8 +30,8 @@ debug = true
 [node name="Transform4D" parent="RigidbodyResolver/Rigidbody4D" index="0" node_paths=PackedStringArray("mesh_instance")]
 rotor = SubResource("Resource_3f1xp")
 translation = Vector4(0, 0, 0, 32)
-mesh_instance = NodePath("@MeshInstance3D@18809")
-last_rotation = SubResource("Resource_6nxbe")
+mesh_instance = NodePath("@MeshInstance3D@21735")
+last_rotation = SubResource("Resource_b56jl")
 
 [node name="Rigidbody4D2" parent="RigidbodyResolver" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 148, 38, -71)
@@ -64,8 +40,8 @@ mass = 16.0
 [node name="Transform4D" parent="RigidbodyResolver/Rigidbody4D2" index="0" node_paths=PackedStringArray("mesh_instance")]
 rotor = SubResource("Resource_vsqj5")
 translation = Vector4(0, 0, 0, -64)
-mesh_instance = NodePath("@MeshInstance3D@18811")
-last_rotation = SubResource("Resource_ly78q")
+mesh_instance = NodePath("@MeshInstance3D@21737")
+last_rotation = SubResource("Resource_i812h")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.704073, 0, -0.710128, 0, 1, 0, 0.710128, 0, 0.704073, 0, 0, 0)

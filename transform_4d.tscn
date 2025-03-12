@@ -1,17 +1,11 @@
 [gd_scene load_steps=7 format=3 uid="uid://c1o8j2u316xe7"]
 
-[ext_resource type="Script" path="res://Transform4D.gd" id="1_obtk4"]
-[ext_resource type="Script" path="res://Rotors.gd" id="2_ydeqs"]
-[ext_resource type="Script" path="res://HyperCube.gd" id="3_kt2am"]
+[ext_resource type="Script" uid="uid://dn56bjf5at3wn" path="res://Transform4D.gd" id="1_obtk4"]
+[ext_resource type="Script" uid="uid://ckfqyr1h15ykr" path="res://Rotors.gd" id="2_ydeqs"]
+[ext_resource type="Script" uid="uid://7afd33sj0yvi" path="res://HyperCube.gd" id="3_kt2am"]
 
 [sub_resource type="Resource" id="Resource_b35xo"]
 script = ExtResource("2_ydeqs")
-angle_xy = 0.0
-angle_xz = 0.0
-angle_xw = 121.3
-angle_yz = 0.0
-angle_yw = 0.0
-angle_zw = 53.2
 
 [sub_resource type="Resource" id="Resource_wbbq7"]
 script = ExtResource("3_kt2am")
@@ -19,12 +13,6 @@ scale = Vector4(64, 64, 64, 128)
 
 [sub_resource type="Resource" id="Resource_n4gjp"]
 script = ExtResource("2_ydeqs")
-angle_xy = 0.0
-angle_xz = 0.0
-angle_xw = 121.3
-angle_yz = 0.0
-angle_yw = 0.0
-angle_zw = 53.2
 
 [node name="Transform4D" type="Node3D"]
 script = ExtResource("1_obtk4")

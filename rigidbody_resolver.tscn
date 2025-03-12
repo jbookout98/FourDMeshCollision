@@ -1,35 +1,17 @@
 [gd_scene load_steps=7 format=3 uid="uid://bkgrudn6487mg"]
 
-[ext_resource type="Script" path="res://RigidbodyResolver.gd" id="1_3eb1d"]
+[ext_resource type="Script" uid="uid://bggdaw75nrjxv" path="res://RigidbodyResolver.gd" id="1_3eb1d"]
 [ext_resource type="PackedScene" uid="uid://ur3rvrdl7x2e" path="res://rigidbody_4d.tscn" id="2_vxigg"]
-[ext_resource type="Script" path="res://Rotors.gd" id="3_pwu1y"]
+[ext_resource type="Script" uid="uid://ckfqyr1h15ykr" path="res://Rotors.gd" id="3_pwu1y"]
 
 [sub_resource type="Resource" id="Resource_2dttd"]
 script = ExtResource("3_pwu1y")
-angle_xy = 0.0
-angle_xz = 0.0
-angle_xw = 0.0
-angle_yz = 0.0
-angle_yw = 0.0
-angle_zw = 0.0
 
 [sub_resource type="Resource" id="Resource_qhvwv"]
 script = ExtResource("3_pwu1y")
-angle_xy = 0.0
-angle_xz = 0.0
-angle_xw = 0.0
-angle_yz = 0.0
-angle_yw = 0.0
-angle_zw = 0.0
 
 [sub_resource type="Resource" id="Resource_4owkb"]
 script = ExtResource("3_pwu1y")
-angle_xy = 0.0
-angle_xz = 0.0
-angle_xw = 0.0
-angle_yz = 0.0
-angle_yw = 0.0
-angle_zw = 0.0
 
 [node name="RigidbodyResolver" type="Node3D"]
 script = ExtResource("1_3eb1d")

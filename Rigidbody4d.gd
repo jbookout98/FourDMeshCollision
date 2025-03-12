@@ -152,6 +152,7 @@ func rotor_exp(biv: Bivector) -> Rotor:
 	var omega_mag = biv.magnitude()
 	if omega_mag < eps:
 		return Rotor.new(1.0, 0, 0, 0, 0, 0, 0)
+		angularVelocity = Bivector.new(0, 0, 0, 0, 0, 0)
 	var cos_val = cos(omega_mag)
 	var sin_val = sin(omega_mag)
 	var u_xy = biv.xy / omega_mag
@@ -168,7 +169,7 @@ func rotor_exp(biv: Bivector) -> Rotor:
 					   sin_val * u_yw,
 					   sin_val * u_zw)
 
-const ANGULAR_DAMPING = 0.8  # Lower this value for more damping
+const ANGULAR_DAMPING = 0.9  # Lower this value for more damping
 const MAX_ANG_VEL = 100.0 
 
 func clamp_angular_velocity(ang: Bivector, max_val: float) -> Bivector:
@@ -186,14 +187,15 @@ func update_state(delta: float) -> void:
 		angularVelocity = Bivector.new(0, 0, 0, 0, 0, 0)
 	
 	angularVelocity = clamp_angular_velocity(angularVelocity, MAX_ANG_VEL)
+	var delta_rotor: Rotor = rotor_exp(angularVelocity.scale(-0.5 * delta))
+	if debug:
+		print("DeltaRotor : "  + delta_rotor.getListOfAngles())
+	transform4d.rotor = delta_rotor.multiply(transform4d.rotor, true)
 	
-	var delta_rotor: Rotor = rotor_exp(angularVelocity.scale(delta))
 	
-	transform4d.rotor = delta_rotor.multiply(transform4d.rotor,true)
-	transform4d.rotor.update_exported_angles()
-
 	global_position += Vector3(velocity.x, velocity.y, velocity.z) * delta
 	$Transform4D.translation.w += velocity.w * delta
 	if debug:
+		print("Angular Velocity Magnitude: ", angularVelocity.magnitude())
+		
 		print("Rotor Data: " + transform4d.rotor.getListOfAngles())
-
