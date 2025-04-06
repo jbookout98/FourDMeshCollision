@@ -6,9 +6,20 @@ class_name Rigidbody4D
 @export var mass =1.0
 var velocity:Vector4 = Vector4(0,0,0,0)
 @onready var angularVelocity :Bivector =Bivector.new(0,0,0,0,0,0)
-
+@export var staticRigidbody = false
 @export var debug = false
-
+var gravity=980
+var dimensions = Vector4(0,0,0,0)
+var floorNormal = Vector4(0, 1, 0, 0)
+func _ready() -> void:
+	dimensions = transform4d.mesh.scale
+	if staticRigidbody:
+		mass = INF
+func inverse_mass():
+	if mass==0.0:
+		return 0.0
+	else:
+		return 1.0/mass
 func project_vertices(vertices: Array, axis: Vector4) -> Dictionary:
 	var min_proj = INF
 	var max_proj = -INF
@@ -171,7 +182,7 @@ func rotor_exp(biv: Bivector) -> Rotor:
 
 const ANGULAR_DAMPING = 0.9  # Lower this value for more damping
 const MAX_ANG_VEL = 100.0 
-
+var resolved_this_frame=false
 func clamp_angular_velocity(ang: Bivector, max_val: float) -> Bivector:
 	var comps = [ang.xy, ang.xz, ang.xw, ang.yz, ang.yw, ang.zw]
 	var mag = sqrt(comps[0]*comps[0] + comps[1]*comps[1] + comps[2]*comps[2] +
@@ -182,20 +193,20 @@ func clamp_angular_velocity(ang: Bivector, max_val: float) -> Bivector:
 	return ang
 
 func update_state(delta: float) -> void:
-	angularVelocity = angularVelocity.scale(ANGULAR_DAMPING)
-	if angularVelocity.magnitude() < 1e-6:
-		angularVelocity = Bivector.new(0, 0, 0, 0, 0, 0)
-	
-	angularVelocity = clamp_angular_velocity(angularVelocity, MAX_ANG_VEL)
-	var delta_rotor: Rotor = rotor_exp(angularVelocity.scale(-0.5 * delta))
-	if debug:
-		print("DeltaRotor : "  + delta_rotor.getListOfAngles())
-	transform4d.rotor = delta_rotor.multiply(transform4d.rotor, true)
-	
-	
-	global_position += Vector3(velocity.x, velocity.y, velocity.z) * delta
-	$Transform4D.translation.w += velocity.w * delta
-	if debug:
-		print("Angular Velocity Magnitude: ", angularVelocity.magnitude())
+	if staticRigidbody == false:
+		# Apply angular damping
+		angularVelocity = angularVelocity.scale(ANGULAR_DAMPING)
+		if angularVelocity.magnitude() < 1e-6:
+			angularVelocity = Bivector.new(0, 0, 0, 0, 0, 0)
 		
-		print("Rotor Data: " + transform4d.rotor.getListOfAngles())
+		angularVelocity = clamp_angular_velocity(angularVelocity, MAX_ANG_VEL)
+		var delta_rotor: Rotor = rotor_exp(angularVelocity.scale(-0.5 * delta))
+		
+		transform4d.rotor = delta_rotor.multiply(transform4d.rotor, true)
+		
+		# Update position using velocity
+		global_position += Vector3(velocity.x, velocity.y, velocity.z) * delta
+		$Transform4D.translation.w += velocity.w * delta
+		
+		# Apply linear damping to velocity
+		velocity *= 0.99

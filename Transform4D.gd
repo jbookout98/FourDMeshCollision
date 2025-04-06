@@ -5,7 +5,7 @@ class_name Transform4D
 
 @export var rotor: Rotor
 @export var translation: Vector4 = Vector4()
-@export var mesh: HyperCube = HyperCube.new()
+@export var mesh: Mesh4D = HyperCube.new()
 @export var mesh_instance: MeshInstance3D = null
 
 var last_translation: Vector4 = Vector4()
@@ -21,7 +21,7 @@ func _init(rotor: Rotor = Rotor.new(), translation: Vector4 = Vector4()):
 func transform_vector(vector: Vector4) -> Vector4:
 	return rotor.rotate(vector) + translation
 func _ready():
-	mesh.init_hypercube()
+	mesh.init_mesh()
 # Inverse transform: inverse rotor and inverse translation
 func inverse() -> Transform4D:
 	var inv_rotation = Rotor.new(rotor.s, -rotor.xy, -rotor.xz, -rotor.xw, -rotor.yz, -rotor.yw, -rotor.zw)

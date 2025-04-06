@@ -1,51 +1,117 @@
-[gd_scene load_steps=7 format=3 uid="uid://dp600yibglqtj"]
+[gd_scene load_steps=16 format=3 uid="uid://dp600yibglqtj"]
 
+[ext_resource type="Script" uid="uid://cxljjxsqbd3y6" path="res://IfAreaHitsExit.gd" id="1_58kua"]
 [ext_resource type="PackedScene" uid="uid://bkgrudn6487mg" path="res://rigidbody_resolver.tscn" id="1_ncdk3"]
 [ext_resource type="Script" uid="uid://ckfqyr1h15ykr" path="res://Rotors.gd" id="3_2rjfj"]
+[ext_resource type="PackedScene" uid="uid://ur3rvrdl7x2e" path="res://rigidbody_4d.tscn" id="4_22hco"]
+[ext_resource type="Script" uid="uid://dtpkorthaweye" path="res://collision_shape_3d.gd" id="4_nopgj"]
+[ext_resource type="Script" uid="uid://7afd33sj0yvi" path="res://HyperCube.gd" id="5_22hco"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_nopgj"]
+radius = 100.0
 
 [sub_resource type="Resource" id="Resource_3f1xp"]
 script = ExtResource("3_2rjfj")
 
-[sub_resource type="Resource" id="Resource_b56jl"]
+[sub_resource type="Resource" id="Resource_22hco"]
 script = ExtResource("3_2rjfj")
 
 [sub_resource type="Resource" id="Resource_vsqj5"]
 script = ExtResource("3_2rjfj")
 
-[sub_resource type="Resource" id="Resource_i812h"]
+[sub_resource type="Resource" id="Resource_swcnr"]
 script = ExtResource("3_2rjfj")
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_58kua"]
+radius = 64.176
+
+[sub_resource type="Resource" id="Resource_4phwr"]
+script = ExtResource("5_22hco")
+scale = Vector4(512, 16, 512, 32)
+metadata/_custom_type_script = "uid://7afd33sj0yvi"
+
+[sub_resource type="Resource" id="Resource_2lvr1"]
+script = ExtResource("3_2rjfj")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_22hco"]
+size = Vector3(128, 4096, 4096)
+
 [node name="Node3D" type="Node3D"]
+script = ExtResource("1_58kua")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -192, 482.732, -15.1096)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -192, -82.7799, 951.059)
 
 [node name="RigidbodyResolver" parent="." instance=ExtResource("1_ncdk3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.76381)
 
 [node name="Rigidbody4D" parent="RigidbodyResolver" index="0"]
 mass = 2.0
-debug = true
 
-[node name="Transform4D" parent="RigidbodyResolver/Rigidbody4D" index="0" node_paths=PackedStringArray("mesh_instance")]
+[node name="Area3D" type="Area3D" parent="RigidbodyResolver/Rigidbody4D" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidbodyResolver/Rigidbody4D/Area3D"]
+shape = SubResource("SphereShape3D_nopgj")
+debug_color = Color(0.929502, 3.15738e-05, 0.660483, 0.42)
+
+[node name="Transform4D" parent="RigidbodyResolver/Rigidbody4D" index="1" node_paths=PackedStringArray("mesh_instance")]
 rotor = SubResource("Resource_3f1xp")
 translation = Vector4(0, 0, 0, 32)
-mesh_instance = NodePath("@MeshInstance3D@21735")
-last_rotation = SubResource("Resource_b56jl")
+mesh_instance = NodePath("@MeshInstance3D@22202")
+last_rotation = SubResource("Resource_22hco")
 
 [node name="Rigidbody4D2" parent="RigidbodyResolver" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 148, 38, -71)
 mass = 16.0
+debug = true
 
 [node name="Transform4D" parent="RigidbodyResolver/Rigidbody4D2" index="0" node_paths=PackedStringArray("mesh_instance")]
 rotor = SubResource("Resource_vsqj5")
 translation = Vector4(0, 0, 0, -64)
-mesh_instance = NodePath("@MeshInstance3D@21737")
-last_rotation = SubResource("Resource_i812h")
+mesh_instance = NodePath("@MeshInstance3D@22204")
+last_rotation = SubResource("Resource_swcnr")
+
+[node name="Area3D" type="Area3D" parent="RigidbodyResolver/Rigidbody4D2" index="2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidbodyResolver/Rigidbody4D2/Area3D"]
+shape = SubResource("SphereShape3D_58kua")
+
+[node name="Rigidbody4D3" parent="RigidbodyResolver" instance=ExtResource("4_22hco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -132, -217, -71)
+mass = 1e+09
+staticRigidbody = true
+
+[node name="Transform4D" parent="RigidbodyResolver/Rigidbody4D3" index="0" node_paths=PackedStringArray("mesh_instance")]
+rotor = SubResource("Resource_vsqj5")
+translation = Vector4(0, 0, 0, 2e-05)
+mesh = SubResource("Resource_4phwr")
+mesh_instance = NodePath("@MeshInstance3D@22206")
+last_rotation = SubResource("Resource_2lvr1")
+
+[node name="Area3D" type="Area3D" parent="RigidbodyResolver/Rigidbody4D3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidbodyResolver/Rigidbody4D3/Area3D"]
+shape = SubResource("SphereShape3D_58kua")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.704073, 0, -0.710128, 0, 1, 0, 0.710128, 0, 0.704073, 0, 0, 0)
+transform = Transform3D(0.704073, 0, -0.710128, 0.511415, 0.693795, 0.507054, 0.492683, -0.720172, 0.488482, 0, 0, 0)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -95.9239, 280.258, -68.1799)
+light_energy = 1024.0
+omni_range = 892.297
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1053.46, 0, -162)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_22hco")
+script = ExtResource("4_nopgj")
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 
 [editable path="RigidbodyResolver"]
 [editable path="RigidbodyResolver/Rigidbody4D"]
 [editable path="RigidbodyResolver/Rigidbody4D2"]
+[editable path="RigidbodyResolver/Rigidbody4D3"]

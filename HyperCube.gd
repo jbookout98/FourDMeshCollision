@@ -12,7 +12,7 @@ var indices: Array = []
 
 # Initializes the hypercube vertices.
 # 'scale' is used to define the vertex positions as ±scale.x, ±scale.y, etc.
-func init_hypercube() -> void:
+func init_mesh() -> void:
 	vertices.clear()
 	# Generate vertices at all combinations of -scale and scale for each axis.
 	for x in [-1,1]:
